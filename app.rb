@@ -30,7 +30,9 @@ def authenticate!
 end
 
 get '/' do
-  erb :index
+   @meetups = Meetup.order(name: :asc)
+
+  erb :'meetups/index'
 end
 
 get '/auth/github/callback' do
@@ -54,15 +56,33 @@ get '/example_protected_page' do
   authenticate!
 end
 
+get '/meetups/new' do
+  authenticate!
+  erb :'meetups/new'
+end
+
 get '/meetups' do
   @meetups = Meetup.order(name: :asc)
 
   erb :'meetups/index'
 end
 
-
 get '/meetups/:id' do
   @meetup = Meetup.find(params[:id])
 
   erb :'meetups/show'
+end
+
+post '/meetups' do
+
+  authenticate!
+
+  @meetup = Meetup.new(params[:meetup])
+
+  if @meetup.save
+    redirect "/meetups/#{@meetup.id}"
+  else
+    flash[:notice] = "There were errors with provided info."
+    render :'meetups/new'
+  end
 end
