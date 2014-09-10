@@ -1,0 +1,10 @@
+<h1> All Meetups </h1>
+<body> <br><br><br>
+
+  <ul>
+    <% @meetups.each do |meet| %>
+      <li><a href= "/meetups/<%= meet.id %>"><%= meet.name %></a> - <%= meet.location %></li>
+      <% end %>
+  </ul>
+</body>
+
