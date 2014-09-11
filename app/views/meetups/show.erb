@@ -1,5 +1,9 @@
 <h1><%= @meetup.name %></h1>
 
-<p><%= @meetup.description %></p>
-
 <p><%= @meetup.location %></p>
+
+<form action="/meetups/<%= @meetup.id %>/memberships" method="post">
+<input type="submit" value="Join the meetup!">
+</form>
+
+<p><%= @meetup.description %></p>

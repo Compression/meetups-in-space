@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/flash'
 require 'omniauth-github'
+require 'pry'
 
 require_relative 'config/application'
 
@@ -85,4 +86,18 @@ post '/meetups' do
     flash[:notice] = "There were errors with provided info."
     render :'meetups/new'
   end
+end
+
+post'/meetups/:meetup_id/memberships' do
+  meetup = Meetup.find(params[:meetup_id])
+  @membership = Membership.new(user_id: current_user.id, meetup_id: meetup.id)
+
+  if @membership.save
+    flash[:notice] = "Meetup joined!"
+    redirect "/meetups/#{meetup.id}"
+  else
+    flash[:notice] = "There was an error, please try again."
+    redirect "/meetups/#{meetup.id}"
+  end
+  # erb :'meetups/show'
 end
