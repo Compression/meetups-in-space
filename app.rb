@@ -75,7 +75,6 @@ get '/meetups/:id' do
 end
 
 post '/meetups' do
-
   authenticate!
 
   @meetup = Meetup.new(params[:meetup])
@@ -89,6 +88,8 @@ post '/meetups' do
 end
 
 post'/meetups/:meetup_id/memberships' do
+  authenticate!
+
   meetup = Meetup.find(params[:meetup_id])
   @membership = Membership.new(user_id: current_user.id, meetup_id: meetup.id)
 
